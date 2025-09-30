@@ -19,17 +19,17 @@
 body.dark-mode {
   --bg: #1e1e1e;
   --text: #f4f4f4;
-  --header-bg: #282828; /* Daha koyu başlık */
+  --header-bg: #282828;
   --header-text: #f4f4f4;
   --panel-bg: #2c2c2c;
   --panel-border: #555;
-  --input-bg: #3c3c3c; /* Koyu temada input arkaplanı */
-  --input-text: #f4f4f4; /* Koyu temada input metin rengi */
-  --button-bg: #444; /* Koyu temada buton arkaplanı */
-  --button-text: #f4f4f4; /* Koyu temada buton metin rengi */
-  --button-hover-bg: #555; /* Koyu temada buton hover arkaplanı */
-  --routing-panel-bg: #3a3a3a; /* Koyu temada routing panel arkaplanı */
-  --routing-panel-text: #f4f4f4; /* Koyu temada routing panel metin rengi */
+  --input-bg: #3c3c3c;
+  --input-text: #f4f4f4;
+  --button-bg: #444;
+  --button-text: #f4f4f4;
+  --button-hover-bg: #555;
+  --routing-panel-bg: #3a3a3a;
+  --routing-panel-text: #f4f4f4;
   --modal-bg: #2c2c2c;
 }
 
@@ -82,7 +82,7 @@ header button:hover,
   background-color: var(--button-hover-bg);
 }
 
-/* YENİ: Top Panelleri düzenleme (Kompakt Arayüz) */
+/* Top Panelleri düzenleme (Kompakt Arayüz) */
 #topPanels {
   display: flex;
   flex-wrap: wrap;
@@ -92,16 +92,16 @@ header button:hover,
 #rotaManager {
   padding: 10px;
   background-color: var(--panel-bg);
-  flex: 2; /* Rota yönetimine daha fazla yer ver */
-  min-width: 300px; /* Minimum genişlik */
+  flex: 2;
+  min-width: 300px;
 }
 
 #infoPanel {
   padding: 10px;
   background-color: var(--panel-bg);
-  flex: 1; /* Bilgi paneline daha az yer ver */
-  min-width: 250px; /* Minimum genişlik */
-  border-left: 1px solid var(--panel-border); /* Ayırıcı çizgi */
+  flex: 1;
+  min-width: 250px;
+  border-left: 1px solid var(--panel-border);
 }
 
 #map {
@@ -168,7 +168,6 @@ body.fullscreen #map {
   color: var(--routing-panel-text) !important;
 }
 
-/* Yönlendirme talimatları (100m sonra sağa dön) */
 .leaflet-routing-alt {
   background-color: var(--routing-panel-bg) !important;
   color: var(--routing-panel-text) !important;
@@ -193,7 +192,6 @@ body.fullscreen #map {
     background-color: var(--button-hover-bg) !important;
 }
 
-/* Marker gölgeleri koyu temada da görünür olsun */
 .leaflet-marker-icon, .leaflet-marker-shadow {
   filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.6));
 }
@@ -201,16 +199,29 @@ body.dark-mode .leaflet-marker-icon, body.dark-mode .leaflet-marker-shadow {
   filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.4));
 }
 
-/* Küçük ekranlar için düzenleme (Mobil Uyumluluk) */
+/* Küçük ekranlar için düzenleme (MOBİL UYUMLULUK GÜNCELLEMESİ) */
 @media (max-width: 650px) {
   header {
-    flex-direction: column;
-    align-items: stretch;
+    /* Alt alta dizilmeyi iptal ettik, sadece sığmayanları bir alt satıra saracak. */
+    align-items: flex-start; 
   }
+  
+  header h1 {
+    font-size: 1.1rem;
+    flex-basis: 100%; /* Başlık tam genişlik alsın */
+    margin-bottom: 5px;
+  }
+  
   header select,
   header input,
   header button {
-    width: 100%;
+    /* Mobil menü elemanlarını küçült ve genişliği kısıtla */
+    font-size: 0.8rem;
+    padding: 4px 6px;
+    /* Elemanların yayılmasını sağlamak için flex-grow kullanılır */
+    flex-grow: 1; 
+    flex-basis: auto;
+    min-width: 80px; /* Elemanların çok fazla daralmasını engelle */
   }
 
   /* Mobil cihazda paneller alt alta düşer */
