@@ -292,7 +292,59 @@
       router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' })
     }).addTo(map);
   }
+function createRoute(id, points) {
+    const color = (hatlar.find(h => h.id === id) || {}).color || 'blue';
+    return L.Routing.control({
+      waypoints: points,
+      lineOptions: { styles: [{ color, weight: 5 }] },
+      addWaypoints: false,
+      routeWhileDragging: false,
+      draggableWaypoints: true,
+      
+      // *** YENİ EKLENEN KISIM: ***
+      // Talimatlar panelini açılır/kapanır hale getirir
+      collapsible: true, 
+      // Panel varsayılan olarak kapalı başlasın
+      collapsed: true,
+      // Panel açılırken ve kapanırken bir animasyon ekler
+      // useSummary: true, 
+      // *** YENİ EKLENEN KISIM SONU ***
 
+      createMarker: (i, wp) => {
+        const marker = L.marker(wp.latLng, { draggable: true });
+
+        // Update route on drag end
+        marker.on('dragend', (e) => {
+          rotalar[id].points[i] = e.target.getLatLng();
+          if (rotalar[id].control) map.removeControl(rotalar[id].control);
+          rotalar[id].control = createRoute(id, rotalar[id].points).addTo(map);
+          updateInfo(hatSelect.value);
+          saveRoutes();
+        });
+
+        // Desktop: Delete on right-click
+        marker.on('contextmenu', (e) => {
+          e.originalEvent.preventDefault(); 
+          deleteMarker(id, i);
+        });
+        
+        // Mobile: Delete on long press (300ms)
+        marker.on('touchstart', (e) => {
+          if (e.originalEvent.touches.length > 1) return;
+          holdTimer = setTimeout(() => {
+            deleteMarker(id, i);
+            holdTimer = null; 
+          }, 300); 
+        });
+        marker.on('touchend touchcancel', () => {
+          if (holdTimer) clearTimeout(holdTimer);
+        });
+        
+        return marker;
+      },
+      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' })
+    }).addTo(map);
+  }
    function addPoint(id, latlng) {
     if (!rotalar[id]) rotalar[id] = { points: [], control: null };
     rotalar[id].points.push(latlng);
