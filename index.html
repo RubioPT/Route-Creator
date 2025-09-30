@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Route Creator</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+</head>
+<body>
+  <header>
+    <h1>🗺️ Route Creator</h1>
+    <select id="hatSelect"><option value="">Select Route</option></select>
+    <select id="layerSelect">
+      <option value="OSM">OSM</option>
+      <option value="Carto">Carto</option>
+      <option value="Satellite">Satellite</option>
+    </select>
+    <button id="locateBtn">📍 My Location</button>
+    <button id="fullscreenBtn">⛶</button>
+    <button id="themeToggleBtn">Dark Theme</button>
+    <button onclick="showModal('helpModal')">Feedback & Complaints</button>
+    <button onclick="clearRoutes()">Clear All Routes</button>
+  </header>
+
+  <div id="topPanels">
+    <div id="rotaManager">
+      <h3>Route Management</h3>
+      <input id="newHatName" placeholder="Route Name" />
+      <input id="newHatColor" type="color" value="#0077cc" />
+      <button id="addHatBtn">Add</button>
+      <hr style="margin: 10px 0;">
+      <h3>Delete Route</h3>
+      <select id="removeHatSelect"></select>
+      <button id="removeHatBtn">Delete</button>
+    </div>
+    <div id="infoPanel">
+      <h3>Route Information</h3>
+      <p><strong>Selected Route:</strong> <span id="hatName">None</span></p>
+      <p><strong>Point Count:</strong> <span id="pointCount">0</span></p>
+      <p><strong>Total Distance:</strong> <span id="totalDistance">0 km</span></p>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="helpModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Feedback & Complaints</h2>
+      <p>Your opinion is valuable to us. Please send your feedback and complaints to the address below:</p>
+      <p><strong>📧 hbugrauzun@hotmail.com</strong></p>
+      <button onclick="closeModal('helpModal')">Close</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+/* Genel koyu tema renk değişkenleri */
+:root {
+  --bg: #f4f4f4;
+  --text: #333;
+  --header-bg: #0077cc;
+  --header-text: #fff;
+  --panel-bg: #fff;
+  --panel-border: #ccc;
+  --input-bg: #fff;
+  --input-text: #333;
+  --button-bg: #e0e0e0;
+  --button-text: #333;
+  --button-hover-bg: #d0d0d0;
+  --routing-panel-bg: #fff;
+  --routing-panel-text: #333;
+  --modal-bg: #fff;
+}
+
+body.dark-mode {
+  --bg: #1e1e1e;
+  --text: #f4f4f4;
+  --header-bg: #282828; /* Daha koyu başlık */
+  --header-text: #f4f4f4;
+  --panel-bg: #2c2c2c;
+  --panel-border: #555;
+  --input-bg: #3c3c3c; /* Koyu temada input arkaplanı */
+  --input-text: #f4f4f4; /* Koyu temada input metin rengi */
+  --button-bg: #444; /* Koyu temada buton arkaplanı */
+  --button-text: #f4f4f4; /* Koyu temada buton metin rengi */
+  --button-hover-bg: #555; /* Koyu temada buton hover arkaplanı */
+  --routing-panel-bg: #3a3a3a; /* Koyu temada routing panel arkaplanı */
+  --routing-panel-text: #f4f4f4; /* Koyu temada routing panel metin rengi */
+  --modal-bg: #2c2c2c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+header select,
+header input,
+header button,
+#rotaManager input,
+#rotaManager button {
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+}
+
+header button:hover,
+#rotaManager button:hover {
+  background-color: var(--button-hover-bg);
+}
+
+/* YENİ: Top Panelleri düzenleme (Kompakt Arayüz) */
+#topPanels {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--panel-border);
+}
+
+#rotaManager {
+  padding: 10px;
+  background-color: var(--panel-bg);
+  flex: 2; /* Rota yönetimine daha fazla yer ver */
+  min-width: 300px; /* Minimum genişlik */
+}
+
+#infoPanel {
+  padding: 10px;
+  background-color: var(--panel-bg);
+  flex: 1; /* Bilgi paneline daha az yer ver */
+  min-width: 250px; /* Minimum genişlik */
+  border-left: 1px solid var(--panel-border); /* Ayırıcı çizgi */
+}
+
+#map {
+  width: 100%;
+  height: 80vh;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--modal-bg);
+  color: var(--text);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  border: 1px solid var(--panel-border);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Fullscreen modu için sadece harita kalsın */
+body.fullscreen header,
+body.fullscreen #topPanels {
+  display: none;
+}
+
+body.fullscreen #map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1500;
+}
+
+/* Leaflet Routing Machine Panel Stil Ayarları (Koyu Tema Uyumluluğu) */
+.leaflet-routing-container {
+  background-color: var(--routing-panel-bg) !important;
+  color: var(--routing-panel-text) !important;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 0.9em;
+  border: 1px solid var(--panel-border);
+}
+
+.leaflet-routing-container h2,
+.leaflet-routing-container h3,
+.leaflet-routing-summary p {
+  color: var(--routing-panel-text) !important;
+}
+
+/* Yönlendirme talimatları (100m sonra sağa dön) */
+.leaflet-routing-alt {
+  background-color: var(--routing-panel-bg) !important;
+  color: var(--routing-panel-text) !important;
+}
+
+.leaflet-routing-alt td {
+  padding: 5px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.leaflet-routing-alt tr:last-child td {
+  border-bottom: none;
+}
+
+.leaflet-routing-collapse-btn {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+    border: 1px solid var(--panel-border) !important;
+}
+
+.leaflet-routing-collapse-btn:hover {
+    background-color: var(--button-hover-bg) !important;
+}
+
+/* Marker gölgeleri koyu temada da görünür olsun */
+.leaflet-marker-icon, .leaflet-marker-shadow {
+  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.6));
+}
+body.dark-mode .leaflet-marker-icon, body.dark-mode .leaflet-marker-shadow {
+  filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.4));
+}
+
+/* Küçük ekranlar için düzenleme (Mobil Uyumluluk) */
+@media (max-width: 650px) {
+  header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  header select,
+  header input,
+  header button {
+    width: 100%;
+  }
+
+  /* Mobil cihazda paneller alt alta düşer */
+  #infoPanel {
+      border-left: none;
+      border-top: 1px solid var(--panel-border);
+  }
+  #rotaManager, #infoPanel {
+      flex-basis: 100%;
+      min-width: 100%;
+  }
+}
