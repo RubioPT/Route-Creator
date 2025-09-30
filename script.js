@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  // Admin şifresi kaldırıldı.
   const STORAGE = {
     hats: 'hats',
     routes: 'routes',
@@ -9,7 +10,7 @@
 
   let hatlar = [];
   const rotalar = {};
-  let holdTimer; // Timer for mobile long press
+  let holdTimer; // Mobile long press timer
 
   // Map centered on Turkey (Ankara, Zoom 6)
   const map = L.map('map').setView([39.9334, 32.8597], 6);
@@ -25,10 +26,12 @@
   const pointCountEl = document.getElementById('pointCount');
   const totalDistanceEl = document.getElementById('totalDistance');
   const themeBtn = document.getElementById('themeToggleBtn');
-  const rotaManager = document.getElementById('rotaManager');
   const layerSelect = document.getElementById('layerSelect');
   const locateBtn = document.getElementById('locateBtn');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
+  // Yeni menü elementleri
+  const menuToggleBtn = document.getElementById('menuToggleBtn');
+  const menuContainer = document.getElementById('menuContainer');
 
   init();
 
@@ -86,12 +89,29 @@
       updateInfo(null);
     };
 
-    document.querySelector('button[onclick="showModal(\'helpModal\')"]').onclick = () => {
-      document.getElementById('helpModal').classList.remove('hidden');
-    };
+    // Modal show/close
+    window.showModal = id => document.getElementById(id)?.classList.remove('hidden');
+    window.closeModal = id => document.getElementById(id)?.classList.add('hidden');
 
     renderRotaManager();
+    setupMenuToggle(); // Yeni menü toggle işlevini çağır
   }
+  
+  // Yeni Menü Toggle İşlevi
+  function setupMenuToggle() {
+    if (menuToggleBtn && menuContainer) {
+        menuToggleBtn.onclick = () => {
+            menuContainer.classList.toggle('open');
+            // Buton metnini de değiştirir
+            if (menuContainer.classList.contains('open')) {
+                menuToggleBtn.textContent = '✖ Close';
+            } else {
+                menuToggleBtn.textContent = '☰ Menu';
+            }
+        };
+    }
+  }
+
 
   function loadTheme() {
     const theme = localStorage.getItem(STORAGE.theme);
@@ -287,7 +307,6 @@
   }
 
   function showRoute(id) {
-    // Only show the selected route
     for (let key in rotalar) {
       if (rotalar[key].control) {
         map.removeControl(rotalar[key].control);
@@ -324,8 +343,4 @@
 
     totalDistanceEl.textContent = (total / 1000).toFixed(2) + ' km';
   }
-
-  // Modal control
-  window.showModal = id => document.getElementById(id)?.classList.remove('hidden');
-  window.closeModal = id => document.getElementById(id)?.classList.add('hidden');
 })();
