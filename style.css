@@ -10,12 +10,15 @@
   --button-bg: #e0e0e0;
   --button-text: #333;
   --button-hover-bg: #d0d0d0;
+  --routing-panel-bg: #fff;
+  --routing-panel-text: #333;
+  --modal-bg: #fff;
 }
 
 body.dark-mode {
   --bg: #1e1e1e;
   --text: #f4f4f4;
-  --header-bg: #444;
+  --header-bg: #444; 
   --header-text: #f4f4f4;
   --panel-bg: #2c2c2c;
   --panel-border: #555;
@@ -24,6 +27,9 @@ body.dark-mode {
   --button-bg: #444;
   --button-text: #f4f4f4;
   --button-hover-bg: #555;
+  --routing-panel-bg: #3a3a3a;
+  --routing-panel-text: #f4f4f4;
+  --modal-bg: #2c2c2c;
 }
 
 * {
@@ -40,7 +46,7 @@ body {
 
 header {
   display: flex;
-  flex-wrap: wrap; /* Sığmayan elemanları bir alt satıra sarar */
+  flex-wrap: wrap; 
   gap: 10px;
   align-items: center;
   padding: 10px;
@@ -54,13 +60,22 @@ header {
 header h1 {
   font-size: 1.2rem;
   white-space: nowrap;
-  flex-basis: 100%; /* Başlığın tam genişlik almasını sağlar */
-  margin-bottom: 5px;
+  flex-grow: 1; 
 }
 
-header select,
-header input,
-header button {
+/* Menü Butonlarının Kapsayıcısı - Masaüstünde yan yana, mobilde gizli */
+#menuContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: auto; 
+}
+
+/* Tüm menü elemanlarının ortak stili */
+#menuContainer select,
+#menuContainer input,
+#menuContainer button,
+#menuToggleBtn {
   font-size: 0.9rem;
   padding: 6px 10px;
   border: 1px solid var(--panel-border);
@@ -68,43 +83,30 @@ header button {
   background-color: var(--input-bg);
   color: var(--input-text);
   cursor: pointer;
-  flex-grow: 1; /* Yatayda alanı paylaşmasını sağlar */
-  flex-basis: auto; /* Kendi içeriği kadar daralmasına izin verir */
+  flex-grow: 1; 
+  flex-basis: auto; 
 }
 
-/* Tüm panellerin (Admin, HatManager, Info) stilini güncelledik */
-#adminPanel, #hatManager, #infoPanel {
-  padding: 10px;
-  background-color: var(--panel-bg);
-  color: var(--text);
+/* Top Panelleri düzenleme (Kompakt Arayüz) */
+#topPanels {
+  display: flex;
+  flex-wrap: wrap;
   border-top: 1px solid var(--panel-border);
 }
 
-/* Rota Yönetim ve Bilgi Panelleri (Önceki kompakt düzeni taklit eder) */
-#hatManager, #adminPanel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
+#rotaManager {
+  padding: 10px;
+  background-color: var(--panel-bg);
+  flex: 2;
+  min-width: 300px;
 }
-#hatManager input, #adminPanel input {
-    flex-grow: 1;
-    padding: 6px;
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-}
-#hatManager select {
-    padding: 6px;
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-}
-#hatManager button, #adminPanel button {
-    padding: 6px 10px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-    cursor: pointer;
+
+#infoPanel {
+  padding: 10px;
+  background-color: var(--panel-bg);
+  flex: 1;
+  min-width: 250px;
+  border-left: 1px solid var(--panel-border);
 }
 
 #map {
@@ -112,83 +114,96 @@ header button {
   height: 80vh;
 }
 
+/* Diğer stil kuralları (Modal, Fullscreen, Routing Machine, vb.) */
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  z-index: 2000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; justify-content: center; align-items: center;
 }
-
 .modal-content {
-  background-color: var(--panel-bg);
-  color: var(--text);
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 90%;
+  background-color: var(--modal-bg); color: var(--text); padding: 20px; border-radius: 8px; max-width: 400px; width: 90%; border: 1px solid var(--panel-border);
 }
-
-.hidden {
-  display: none;
-}
-
-body.fullscreen header,
-body.fullscreen #infoPanel,
-body.fullscreen #adminPanel,
-body.fullscreen #hatManager {
-  display: none;
-}
-
+.hidden { display: none; }
+body.fullscreen header, body.fullscreen #topPanels { display: none; }
 body.fullscreen #map {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1500;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1500;
+}
+.leaflet-routing-container {
+  background-color: var(--routing-panel-bg) !important; color: var(--routing-panel-text) !important; border-radius: 5px; padding: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); font-size: 0.9em; border: 1px solid var(--panel-border);
+}
+.leaflet-routing-container h2, .leaflet-routing-container h3, .leaflet-routing-summary p { color: var(--routing-panel-text) !important; }
+.leaflet-routing-alt { background-color: var(--routing-panel-bg) !important; color: var(--routing-panel-text) !important; }
+.leaflet-routing-alt td { padding: 5px; border-bottom: 1px solid var(--panel-border); }
+.leaflet-routing-alt tr:last-child td { border-bottom: none; }
+.leaflet-routing-collapse-btn { background-color: var(--button-bg) !important; color: var(--button-text) !important; border: 1px solid var(--panel-border) !important; }
+.leaflet-routing-collapse-btn:hover { background-color: var(--button-hover-bg) !important; }
+.leaflet-marker-icon, .leaflet-marker-shadow { filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.6)); }
+body.dark-mode .leaflet-marker-icon, body.dark-mode .leaflet-marker-shadow { filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.4)); }
+
+/* ==================================== */
+/* MOBİL UYUMLULUK EKLEMESİ - AÇILIR MENÜ */
+/* ==================================== */
+
+/* Masaüstü (651px ve üstü) için Menü Toggle butonunu gizle */
+@media (min-width: 651px) {
+  #menuToggleBtn {
+    display: none;
+  }
 }
 
-/* MOBİL UYUMLULUK EKLEMESİ */
 @media (max-width: 650px) {
-  
-  header {
-    /* Başlık ve butonların sığdığı kadar yan yana, sığmayanların alt satıra geçmesini sağlar */
-    padding-bottom: 5px; /* Alt boşluğu azalt */
+    
+  /* Menü Toggle Butonunu göster */
+  #menuToggleBtn {
+    display: block; 
+    flex-grow: 0;
+    flex-basis: auto;
+    font-size: 0.9rem;
+    padding: 6px 10px;
   }
 
-  header h1 {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-    order: -2; /* Başlığın en üste çıkmasını sağlar */
+  /* Menü Kapsayıcıyı gizle ve alt alta diz */
+  #menuContainer {
+    display: none; /* Varsayılan olarak gizli */
+    flex-direction: column;
+    width: 100%; /* Tam genişlik kaplar */
+    order: 1; 
+  }
+
+  /* Açık olduğunda göster */
+  #menuContainer.open {
+    display: flex;
   }
   
-  header select,
-  header button {
-    /* Header buton ve seçim kutularını küçültür */
-    font-size: 0.8rem;
-    padding: 4px 6px;
-    flex-basis: calc(50% - 5px); /* İki elemanın yan yana sığmasını sağlar */
-    min-width: unset;
+  /* Menü içindeki tüm elemanlar tam genişlik alır */
+  #menuContainer select,
+  #menuContainer button {
+    width: 100%;
+    margin-top: 5px;
+    flex-basis: 100%;
+    font-size: 0.9rem;
+  }
+
+  /* Yönetim ve Bilgi Panelleri (alt alta düşer) */
+  #topPanels {
+    flex-direction: column;
+  }
+
+  #infoPanel {
+      border-left: none;
+      border-top: 1px solid var(--panel-border);
+  }
+  #rotaManager, #infoPanel {
+      flex-basis: 100%;
+      min-width: 100%;
   }
   
-  /* Admin Paneli ve Hat Yönetimi Panelleri için mobil düzenleme */
-  #adminPanel, #hatManager {
-    flex-direction: column; /* Mobil ekranlarda panellerdeki input/butonları alt alta dizer */
-    align-items: stretch;
+  /* Rota Yönetimi içindeki buton ve inputlar alt alta */
+  #rotaManager h3, #rotaManager hr {
+      width: 100%;
   }
-  
-  #adminPanel input, 
-  #hatManager input, 
-  #hatManager select, 
-  #adminPanel button, 
-  #hatManager button {
-      width: 100%; /* İç elemanların tam genişlik almasını sağlar */
+  #rotaManager input, 
+  #rotaManager select,
+  #rotaManager button {
+      width: 100%; 
       margin-top: 5px;
   }
 }
