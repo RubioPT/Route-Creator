@@ -1,4 +1,3 @@
-/* Genel koyu tema renk değişkenleri */
 :root {
   --bg: #f4f4f4;
   --text: #333;
@@ -11,15 +10,12 @@
   --button-bg: #e0e0e0;
   --button-text: #333;
   --button-hover-bg: #d0d0d0;
-  --routing-panel-bg: #fff;
-  --routing-panel-text: #333;
-  --modal-bg: #fff;
 }
 
 body.dark-mode {
   --bg: #1e1e1e;
   --text: #f4f4f4;
-  --header-bg: #282828;
+  --header-bg: #444;
   --header-text: #f4f4f4;
   --panel-bg: #2c2c2c;
   --panel-border: #555;
@@ -28,9 +24,6 @@ body.dark-mode {
   --button-bg: #444;
   --button-text: #f4f4f4;
   --button-hover-bg: #555;
-  --routing-panel-bg: #3a3a3a;
-  --routing-panel-text: #f4f4f4;
-  --modal-bg: #2c2c2c;
 }
 
 * {
@@ -47,7 +40,7 @@ body {
 
 header {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Sığmayan elemanları bir alt satıra sarar */
   gap: 10px;
   align-items: center;
   padding: 10px;
@@ -61,47 +54,57 @@ header {
 header h1 {
   font-size: 1.2rem;
   white-space: nowrap;
+  flex-basis: 100%; /* Başlığın tam genişlik almasını sağlar */
+  margin-bottom: 5px;
 }
 
 header select,
 header input,
-header button,
-#rotaManager input,
-#rotaManager button {
+header button {
   font-size: 0.9rem;
   padding: 6px 10px;
+  border: 1px solid var(--panel-border);
   border-radius: 4px;
   background-color: var(--input-bg);
   color: var(--input-text);
-  border: 1px solid var(--panel-border);
   cursor: pointer;
+  flex-grow: 1; /* Yatayda alanı paylaşmasını sağlar */
+  flex-basis: auto; /* Kendi içeriği kadar daralmasına izin verir */
 }
 
-header button:hover,
-#rotaManager button:hover {
-  background-color: var(--button-hover-bg);
-}
-
-/* Top Panelleri düzenleme (Kompakt Arayüz) */
-#topPanels {
-  display: flex;
-  flex-wrap: wrap;
+/* Tüm panellerin (Admin, HatManager, Info) stilini güncelledik */
+#adminPanel, #hatManager, #infoPanel {
+  padding: 10px;
+  background-color: var(--panel-bg);
+  color: var(--text);
   border-top: 1px solid var(--panel-border);
 }
 
-#rotaManager {
-  padding: 10px;
-  background-color: var(--panel-bg);
-  flex: 2;
-  min-width: 300px;
+/* Rota Yönetim ve Bilgi Panelleri (Önceki kompakt düzeni taklit eder) */
+#hatManager, #adminPanel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
 }
-
-#infoPanel {
-  padding: 10px;
-  background-color: var(--panel-bg);
-  flex: 1;
-  min-width: 250px;
-  border-left: 1px solid var(--panel-border);
+#hatManager input, #adminPanel input {
+    flex-grow: 1;
+    padding: 6px;
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+}
+#hatManager select {
+    padding: 6px;
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+}
+#hatManager button, #adminPanel button {
+    padding: 6px 10px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 #map {
@@ -123,22 +126,22 @@ header button:hover,
 }
 
 .modal-content {
-  background-color: var(--modal-bg);
+  background-color: var(--panel-bg);
   color: var(--text);
   padding: 20px;
   border-radius: 8px;
   max-width: 400px;
   width: 90%;
-  border: 1px solid var(--panel-border);
 }
 
 .hidden {
   display: none;
 }
 
-/* Fullscreen modu için sadece harita kalsın */
 body.fullscreen header,
-body.fullscreen #topPanels {
+body.fullscreen #infoPanel,
+body.fullscreen #adminPanel,
+body.fullscreen #hatManager {
   display: none;
 }
 
@@ -151,86 +154,41 @@ body.fullscreen #map {
   z-index: 1500;
 }
 
-/* Leaflet Routing Machine Panel Stil Ayarları (Koyu Tema Uyumluluğu) */
-.leaflet-routing-container {
-  background-color: var(--routing-panel-bg) !important;
-  color: var(--routing-panel-text) !important;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  font-size: 0.9em;
-  border: 1px solid var(--panel-border);
-}
-
-.leaflet-routing-container h2,
-.leaflet-routing-container h3,
-.leaflet-routing-summary p {
-  color: var(--routing-panel-text) !important;
-}
-
-.leaflet-routing-alt {
-  background-color: var(--routing-panel-bg) !important;
-  color: var(--routing-panel-text) !important;
-}
-
-.leaflet-routing-alt td {
-  padding: 5px;
-  border-bottom: 1px solid var(--panel-border);
-}
-
-.leaflet-routing-alt tr:last-child td {
-  border-bottom: none;
-}
-
-.leaflet-routing-collapse-btn {
-    background-color: var(--button-bg) !important;
-    color: var(--button-text) !important;
-    border: 1px solid var(--panel-border) !important;
-}
-
-.leaflet-routing-collapse-btn:hover {
-    background-color: var(--button-hover-bg) !important;
-}
-
-.leaflet-marker-icon, .leaflet-marker-shadow {
-  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.6));
-}
-body.dark-mode .leaflet-marker-icon, body.dark-mode .leaflet-marker-shadow {
-  filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.4));
-}
-
-/* Küçük ekranlar için düzenleme (MOBİL UYUMLULUK GÜNCELLEMESİ) */
+/* MOBİL UYUMLULUK EKLEMESİ */
 @media (max-width: 650px) {
-  header {
-    /* Alt alta dizilmeyi iptal ettik, sadece sığmayanları bir alt satıra saracak. */
-    align-items: flex-start; 
-  }
   
+  header {
+    /* Başlık ve butonların sığdığı kadar yan yana, sığmayanların alt satıra geçmesini sağlar */
+    padding-bottom: 5px; /* Alt boşluğu azalt */
+  }
+
   header h1 {
     font-size: 1.1rem;
-    flex-basis: 100%; /* Başlık tam genişlik alsın */
     margin-bottom: 5px;
+    order: -2; /* Başlığın en üste çıkmasını sağlar */
   }
   
   header select,
-  header input,
   header button {
-    /* Mobil menü elemanlarını küçült ve genişliği kısıtla */
+    /* Header buton ve seçim kutularını küçültür */
     font-size: 0.8rem;
     padding: 4px 6px;
-    /* Elemanların yayılmasını sağlamak için flex-grow kullanılır */
-    flex-grow: 1; 
-    flex-basis: auto;
-    min-width: 80px; /* Elemanların çok fazla daralmasını engelle */
+    flex-basis: calc(50% - 5px); /* İki elemanın yan yana sığmasını sağlar */
+    min-width: unset;
   }
-
-  /* Mobil cihazda paneller alt alta düşer */
-  #infoPanel {
-      border-left: none;
-      border-top: 1px solid var(--panel-border);
+  
+  /* Admin Paneli ve Hat Yönetimi Panelleri için mobil düzenleme */
+  #adminPanel, #hatManager {
+    flex-direction: column; /* Mobil ekranlarda panellerdeki input/butonları alt alta dizer */
+    align-items: stretch;
   }
-  #rotaManager, #infoPanel {
-      flex-basis: 100%;
-      min-width: 100%;
+  
+  #adminPanel input, 
+  #hatManager input, 
+  #hatManager select, 
+  #adminPanel button, 
+  #hatManager button {
+      width: 100%; /* İç elemanların tam genişlik almasını sağlar */
+      margin-top: 5px;
   }
 }
